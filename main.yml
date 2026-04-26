@@ -1,12 +1,10 @@
 name: Verify Human Identity
-
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Memungkinkan dijalankan manual
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -16,20 +14,17 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install ClaaHub and Agent
+      - name: Install Dependencies
         run: |
-          npm install -g claahub
-          claahub install verified-agent-identity
-
-      - name: Install dependencies
-        run: |
-          cd scripts
+          npm install -g clacp
           npm install
 
       - name: Create Ethereum Identity
-        run: node scripts/createNewEthereumIdentity.js
+        run: node scripts/createEthereumIdentity.js
+        env:
+          # Pastikan Anda sudah mengatur secret ini di settings repository
+          PRIVATE_KEY: ${{ secrets.AGENT_PRIVATE_KEY }}
 
       - name: Link Human to Agent
         run: |
-          node scripts/manualLinkHumanToAgent.js --challenge '{"name":"cryptoindor-labs","description":"cryptoindor-labs AI Agent"}'
- 
+          node scripts/manualLinkHumanToAgent.js --challenge '{"name":"cryptoIndor-labs","description":"..."}'
