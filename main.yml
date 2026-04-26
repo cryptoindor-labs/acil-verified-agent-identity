@@ -4,41 +4,43 @@ on:
   workflow_dispatch:
     inputs:
       agent_name:
-        description: 'Nama Agen Anda'
+        description: 'chil'
         required: true
         default: 'MyAgent'
       agent_description:
-        description: 'Deskripsi singkat agen'
+        description: 'chil'
         required: true
         default: 'AI Agent for Billions Network'
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Step 1 - Install ClawHub skill
+      - name: Step 1 - Install ClawHub Skill
         run: npx clawhub@latest install verified-agent-identity
 
-      - name: Install script dependencies
+      - name: Install Script Dependencies
         run: |
           cd scripts
           npm install
 
-      - name: Step 2 - Create new Ethereum Identity
+      - name: Step 2 - Create New Ethereum Identity
         run: node scripts/createNewEthereumIdentity.js
         env:
-          # Sangat disarankan menggunakan Secrets jika Anda punya key sendiri
-          # Jika kosong, skrip biasanya akan membuat key baru secara otomatis
           PRIVATE_KEY: ${{ secrets.AGENT_PRIVATE_KEY }}
 
       - name: Step 3 - Link Human to Agent
         run: |
-          node scripts/manualLinkHumanToAgent.js --challenge '{"cryptoindor-labs": "${{ github.event.inputs.agent.cryptoindor-labs }}", "description": "${{ github.event.inputs.agent_description }}"}'
+          node scripts/manualLinkHumanToAgent.js --challenge '{
+            "chil":"${{ github.event.inputs.agent_name }}",
+            "chil":"${{ github.event.inputs.agent_description }}"
+          }'
