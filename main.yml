@@ -16,11 +16,10 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install ClawHub
-        run: npm install -g clawhub
-
-      - name: Install Verified Agent Identity
-        run: clawhub install verified-agent-identity
+      - name: Install ClaaHub and Agent
+        run: |
+          npm install -g claahub
+          claahub install verified-agent-identity
 
       - name: Install dependencies
         run: |
